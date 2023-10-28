@@ -1,11 +1,11 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
-import { loginHandler, signupHandler } from "./handlers/auth.handlers";
+import { loginHandler, refreshTokenHandler, signupHandler, verifyTokenHandler } from "./handlers/auth.handlers";
 import {
+  deleteUserHandler,
   getUserByIdHandler,
   getUsersHandler,
-  deleteUserHandler,
   updateUserHandler,
 } from "./handlers/user.handlers";
 
@@ -32,6 +32,8 @@ const server = new grpc.Server();
 server.addService(authService.service, {
   Login: loginHandler,
   Signup: signupHandler,
+  VerifyToken: verifyTokenHandler,
+  RefreshToken: refreshTokenHandler,
   GetUsers: getUsersHandler,
   GetUserById: getUserByIdHandler,
   UpdateUser: updateUserHandler,

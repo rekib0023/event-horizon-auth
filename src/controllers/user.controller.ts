@@ -1,3 +1,4 @@
+import * as grpc from "@grpc/grpc-js";
 import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
 import { UserId } from "../../proto/auth/UserId";
 import { UserListResponse } from "../../proto/auth/UserListResponse";
@@ -25,7 +26,10 @@ const getUsers = async (): Promise<UserListResponse | ErrorResponse> => {
     };
   } catch (error) {
     console.error(error);
-    return { statusCode: 16, errorMessage: "Internal Server Error" };
+    return {
+      statusCode: grpc.status.INTERNAL,
+      errorMessage: "Internal Server Error",
+    };
   }
 };
 
@@ -49,11 +53,17 @@ const getUserById = async (
         updatedAt: DateToTimestamp(user.updatedAt),
       };
     } else {
-      return { statusCode: 5, errorMessage: "User Not found" };
+      return {
+        statusCode: grpc.status.NOT_FOUND,
+        errorMessage: "User Not found",
+      };
     }
   } catch (error) {
     console.error(error);
-    return { statusCode: 16, errorMessage: "Internal Server Error" };
+    return {
+      statusCode: grpc.status.INTERNAL,
+      errorMessage: "Internal Server Error",
+    };
   }
 };
 
@@ -86,11 +96,17 @@ const updateUser = async (
         updatedAt: DateToTimestamp(user.updatedAt),
       };
     } else {
-      return { statusCode: 5, errorMessage: "User Not found" };
+      return {
+        statusCode: grpc.status.NOT_FOUND,
+        errorMessage: "User Not found",
+      };
     }
   } catch (error) {
     console.error(error);
-    return { statusCode: 16, errorMessage: "Internal Server Error" };
+    return {
+      statusCode: grpc.status.INTERNAL,
+      errorMessage: "Internal Server Error",
+    };
   }
 };
 
@@ -106,11 +122,17 @@ const deleteUser = async (userId: UserId): Promise<void | ErrorResponse> => {
       await user.destroy();
       return;
     } else {
-      return { statusCode: 5, errorMessage: "User Not found" };
+      return {
+        statusCode: grpc.status.NOT_FOUND,
+        errorMessage: "User Not found",
+      };
     }
   } catch (error) {
     console.error(error);
-    return { statusCode: 16, errorMessage: "Internal Server Error" };
+    return {
+      statusCode: grpc.status.INTERNAL,
+      errorMessage: "Internal Server Error",
+    };
   }
 };
 

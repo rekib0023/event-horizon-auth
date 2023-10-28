@@ -4,18 +4,20 @@ import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
 import { UserId } from "../../proto/auth/UserId";
 import { UserListResponse } from "../../proto/auth/UserListResponse";
 import { UserResponse } from "../../proto/auth/UserResponse";
-import * as userController from "../controllers/user.controller";
+import {
+  deleteUser,
+  getUserById,
+  getUsers,
+  updateUser,
+} from "../controllers/user.controller";
 import { ErrorResponse } from "../interfaces";
 import { isErrorResponse } from "../utils";
-
-const { getUsers, getUserById, updateUser, deleteUser } = userController;
 
 async function getUsersHandler(
   call: grpc.ServerUnaryCall<Empty, UserResponse[]>,
   callback: grpc.sendUnaryData<UserListResponse | ErrorResponse>
 ) {
   const response = await getUsers();
-  console.log(response)
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
@@ -40,7 +42,7 @@ async function getUserByIdHandler(
 }
 
 async function deleteUserHandler(
-  call: grpc.ServerUnaryCall<UserId, UserResponse>,
+  call: grpc.ServerUnaryCall<UserId, void>,
   callback: grpc.sendUnaryData<void | ErrorResponse>
 ) {
   const response = await deleteUser(call.request);

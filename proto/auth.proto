@@ -9,10 +9,12 @@ option go_package = "../api-gateway/proto";
 service AuthService {
     rpc Login(LoginRequest) returns (UserResponse);
     rpc Signup(SignupRequest) returns (UserResponse);
+    rpc VerifyToken(Token) returns (TokenVerification);
+    rpc RefreshToken(Token) returns (Token);
     rpc GetUsers(Empty) returns (UserListResponse);
     rpc GetUserById(UserId) returns (UserResponse);
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
-    rpc DeleteUser(UserId) returns (UserResponse);
+    rpc DeleteUser(UserId) returns (Empty);
 }
 
 message Empty {}
@@ -52,4 +54,12 @@ message UserId {
 message UpdateUserRequest {
     UserId userId = 1;
     SignupRequest user = 2;
+}
+
+message Token {
+    string token = 1;
+}
+
+message TokenVerification {
+    string decoded = 1;
 }

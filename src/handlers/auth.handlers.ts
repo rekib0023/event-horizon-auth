@@ -1,11 +1,16 @@
 import * as grpc from "@grpc/grpc-js";
 import { LoginRequest } from "../../proto/auth/LoginRequest";
+import { Token } from "../../proto/auth/Token";
+import { TokenVerification } from "../../proto/auth/TokenVerification";
 import { UserResponse } from "../../proto/auth/UserResponse";
-import * as authController from "../controllers/auth.controller";
+import {
+  login,
+  refreshToken,
+  signup,
+  verifyToken,
+} from "../controllers/auth.controller";
 import { ErrorResponse, SignupRequest } from "../interfaces";
 import { checkDuplicateUsernameOrEmail, isErrorResponse } from "../utils";
-
-const { signup, login } = authController;
 
 async function loginHandler(
   call: grpc.ServerUnaryCall<LoginRequest, UserResponse>,
@@ -44,4 +49,32 @@ async function signupHandler(
   callback(null, response);
 }
 
-export { loginHandler, signupHandler };
+async function verifyTokenHandler(
+  call: grpc.ServerUnaryCall<Token, TokenVerification>,
+  callback: grpc.sendUnaryData<TokenVerification | ErrorResponse>
+) {
+  const response = await verifyToken(call.request);
+  if (isErrorResponse(response)) {
+    callback({
+      code: response.statusCode,
+      details: JSON.stringify(response),
+    });
+  }
+  callback(null, response);
+}
+
+async function refreshTokenHandler(
+  call: grpc.ServerUnaryCall<Token, Token>,
+  callback: grpc.sendUnaryData<Token | ErrorResponse>
+) {
+  const response = await refreshToken(call.request);
+  if (isErrorResponse(response)) {
+    callback({
+      code: response.statusCode,
+      details: JSON.stringify(response),
+    });
+  }
+  callback(null, response);
+}
+
+export { loginHandler, signupHandler, verifyTokenHandler, refreshTokenHandler };
