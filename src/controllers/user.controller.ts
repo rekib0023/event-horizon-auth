@@ -1,94 +1,88 @@
-import { Request, Response } from "express";
-import { UserRequest, UserResponse } from "../interfaces/user.interfaces";
+import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
+import { UserId } from "../../proto/auth/UserId";
+import { UserResponse } from "../../proto/auth/UserResponse";
+import { ErrorResponse, SignupRequest } from "../interfaces";
 import db from "../models";
 
 const User = db.users!;
 
-const getUsers = async (
-  _req: Request,
-  res: Response<UserResponse[] | string>
-): Promise<Response<UserResponse[] | string>> => {
+const getUsers = async (): Promise<UserResponse[] | ErrorResponse> => {
   try {
     const users = await User.findAll();
 
-    return res.status(200).send(users.map((user) => user.toResponse()));
+    return users.map((user) => user.toJSON());
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 16, errorMessage: "Internal Server Error" };
   }
 };
 
 const getUserById = async (
-  req: Request,
-  res: Response<UserResponse | string>
-): Promise<Response<UserResponse | string>> => {
+  userId: UserId
+): Promise<UserResponse | ErrorResponse> => {
   try {
-    const id = req.params.id;
     const user = await User.findOne({
       where: {
-        id: id,
+        id: userId.id,
       },
     });
     if (user) {
-      return res.status(200).send(user.toResponse());
+      return user.toJSON();
     } else {
-      return res.status(404).send("User not found");
+      return { statusCode: 5, errorMessage: "User Not found" };
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 16, errorMessage: "Internal Server Error" };
   }
 };
 
 const updateUser = async (
-  req: Request<any, any, UserRequest>,
-  res: Response<UserResponse | string>
-): Promise<Response<UserResponse | string>> => {
+  req: UpdateUserRequest
+): Promise<UserResponse | ErrorResponse> => {
   try {
-    const { firstName, lastName, userName, email } = req.body;
+    const { firstName, lastName, userName, email } = req.user!;
     const data = {
       firstName,
       lastName,
       userName,
       email,
     };
-    const id = req.params.id;
     const user = await User.findOne({
       where: {
-        id: id,
+        id: req.userId?.id,
       },
     });
     if (user) {
       await user.update(data);
       await user.save();
-      return res.status(200).send(user.toResponse());
+      return user.toJSON();
     } else {
-      return res.status(404).send("User not found");
+      return { statusCode: 5, errorMessage: "User Not found" };
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 16, errorMessage: "Internal Server Error" };
   }
 };
 
-const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+const deleteUser = async (userId: UserId): Promise<void | ErrorResponse> => {
   try {
-    const id = req.params.id;
     const user = await User.findOne({
       where: {
-        id: id,
+        id: userId.id,
       },
     });
 
     if (user) {
       await user.destroy();
-      return res.status(204).send();
+      return;
     } else {
-      return res.status(404).send("User not found");
+      return { statusCode: 5, errorMessage: "User Not found" };
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 16, errorMessage: "Internal Server Error" };
   }
 };
 
