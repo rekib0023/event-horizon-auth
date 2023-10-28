@@ -1,5 +1,13 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import { UserAttributes, UserResponse } from "../interfaces/user.interfaces";
+
+interface UserAttributes {
+  id?: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 
 export class User extends Model<UserAttributes> {
   public id!: number;
@@ -10,11 +18,6 @@ export class User extends Model<UserAttributes> {
   public password!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-
-  toResponse() {
-    const { password, ...response } = this.get() as UserResponse & { password: string };;
-    return response;
-  }
 
   public static initModel(sequelize: Sequelize): void {
     User.init(
