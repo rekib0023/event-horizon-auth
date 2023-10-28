@@ -2,6 +2,13 @@ import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
 import { loginHandler, signupHandler } from "./handlers/auth.handlers";
+import {
+  getUserByIdHandler,
+  getUsersHandler,
+  deleteUserHandler,
+  updateUserHandler,
+} from "./handlers/user.handlers";
+
 import db from "./models";
 
 const PROTO_FILE = "../proto/auth.proto";
@@ -19,15 +26,20 @@ const packageDefinition = protoLoader.loadSync(
 
 const authProto = grpc.loadPackageDefinition(packageDefinition);
 const authService = (authProto as any).auth.AuthService;
+
 const server = new grpc.Server();
 
 server.addService(authService.service, {
   Login: loginHandler,
   Signup: signupHandler,
+  GetUsers: getUsersHandler,
+  GetUserById: getUserByIdHandler,
+  UpdateUser: updateUserHandler,
+  DeleteUser: deleteUserHandler,
 });
 
 server.bindAsync(
-  `${process.env.HOST}:${process.env.port}`,
+  `${process.env.HOST}:${process.env.PORT}`,
   grpc.ServerCredentials.createInsecure(),
   (err, port) => {
     if (err) {

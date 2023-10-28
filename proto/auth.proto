@@ -9,7 +9,13 @@ option go_package = "../api-gateway/proto";
 service AuthService {
     rpc Login(LoginRequest) returns (UserResponse);
     rpc Signup(SignupRequest) returns (UserResponse);
+    rpc GetUsers(Empty) returns (UserListResponse);
+    rpc GetUserById(UserId) returns (UserResponse);
+    rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
+    rpc DeleteUser(UserId) returns (UserResponse);
 }
+
+message Empty {}
 
 message LoginRequest {
     string email = 1;
@@ -33,4 +39,17 @@ message UserResponse {
     string token = 6;
     google.protobuf.Timestamp createdAt = 7;
     google.protobuf.Timestamp updatedAt = 8;
+}
+
+message UserListResponse {
+    repeated UserResponse users = 1;
+}
+
+message UserId {
+    int32 id = 1;
+}
+
+message UpdateUserRequest {
+    UserId userId = 1;
+    SignupRequest user = 2;
 }
