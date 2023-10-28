@@ -1,16 +1,28 @@
 import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
 import { UserId } from "../../proto/auth/UserId";
+import { UserListResponse } from "../../proto/auth/UserListResponse";
 import { UserResponse } from "../../proto/auth/UserResponse";
-import { ErrorResponse, SignupRequest } from "../interfaces";
+import { ErrorResponse } from "../interfaces";
 import db from "../models";
+import { DateToTimestamp } from "../utils";
 
 const User = db.users!;
 
-const getUsers = async (): Promise<UserResponse[] | ErrorResponse> => {
+const getUsers = async (): Promise<UserListResponse | ErrorResponse> => {
   try {
     const users = await User.findAll();
 
-    return users.map((user) => user.toJSON());
+    return {
+      users: users.map((user) => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        createdAt: DateToTimestamp(user.createdAt),
+        updatedAt: DateToTimestamp(user.updatedAt),
+      })),
+    };
   } catch (error) {
     console.error(error);
     return { statusCode: 16, errorMessage: "Internal Server Error" };
@@ -27,7 +39,15 @@ const getUserById = async (
       },
     });
     if (user) {
-      return user.toJSON();
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        createdAt: DateToTimestamp(user.createdAt),
+        updatedAt: DateToTimestamp(user.updatedAt),
+      };
     } else {
       return { statusCode: 5, errorMessage: "User Not found" };
     }
@@ -56,7 +76,15 @@ const updateUser = async (
     if (user) {
       await user.update(data);
       await user.save();
-      return user.toJSON();
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        createdAt: DateToTimestamp(user.createdAt),
+        updatedAt: DateToTimestamp(user.updatedAt),
+      };
     } else {
       return { statusCode: 5, errorMessage: "User Not found" };
     }

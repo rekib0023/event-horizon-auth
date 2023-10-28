@@ -12,7 +12,6 @@ async function loginHandler(
   callback: grpc.sendUnaryData<UserResponse | ErrorResponse>
 ) {
   const response = await login(call.request);
-  console.log(response);
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
@@ -36,7 +35,6 @@ async function signupHandler(
   }
 
   const response = await signup(call.request);
-  console.log(response);
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,

@@ -4,6 +4,7 @@ import { LoginRequest } from "../../proto/auth/LoginRequest";
 import { UserResponse } from "../../proto/auth/UserResponse";
 import { ErrorResponse, SignupRequest } from "../interfaces";
 import db from "../models";
+import { DateToTimestamp } from "../utils";
 
 const User = db.users!;
 
@@ -26,8 +27,16 @@ const signup = async (
       let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY! as string, {
         expiresIn: 1 * 24 * 60 * 60 * 1000,
       });
-
-      return { ...user.toJSON(), token };
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        email: user.email,
+        createdAt: DateToTimestamp(user.createdAt),
+        updatedAt: DateToTimestamp(user.updatedAt),
+        token,
+      };
     } else {
       return { statusCode: 3, errorMessage: "Bad request" };
     }
@@ -60,7 +69,16 @@ const login = async (
           }
         );
 
-        return { ...user.toJSON(), token };
+        return {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userName: user.userName,
+          email: user.email,
+          createdAt: DateToTimestamp(user.createdAt),
+          updatedAt: DateToTimestamp(user.updatedAt),
+          token,
+        };
       } else {
         return { statusCode: 16, errorMessage: "Authenticatioan failed" };
       }

@@ -1,20 +1,21 @@
 import * as grpc from "@grpc/grpc-js";
+import { Empty } from "../../proto/auth/Empty";
+import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
+import { UserId } from "../../proto/auth/UserId";
+import { UserListResponse } from "../../proto/auth/UserListResponse";
 import { UserResponse } from "../../proto/auth/UserResponse";
 import * as userController from "../controllers/user.controller";
 import { ErrorResponse } from "../interfaces";
 import { isErrorResponse } from "../utils";
-import { Empty } from "../../proto/auth/Empty";
-import { UserId } from "../../proto/auth/UserId";
-import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
 
 const { getUsers, getUserById, updateUser, deleteUser } = userController;
 
 async function getUsersHandler(
   call: grpc.ServerUnaryCall<Empty, UserResponse[]>,
-  callback: grpc.sendUnaryData<UserResponse[] | ErrorResponse>
+  callback: grpc.sendUnaryData<UserListResponse | ErrorResponse>
 ) {
   const response = await getUsers();
-  console.log(response);
+  console.log(response)
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
@@ -29,7 +30,6 @@ async function getUserByIdHandler(
   callback: grpc.sendUnaryData<UserResponse | ErrorResponse>
 ) {
   const response = await getUserById(call.request);
-  console.log(response);
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
@@ -44,7 +44,6 @@ async function deleteUserHandler(
   callback: grpc.sendUnaryData<void | ErrorResponse>
 ) {
   const response = await deleteUser(call.request);
-  console.log(response);
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
@@ -59,7 +58,6 @@ async function updateUserHandler(
   callback: grpc.sendUnaryData<UserResponse | ErrorResponse>
 ) {
   const response = await updateUser(call.request);
-  console.log(response);
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,

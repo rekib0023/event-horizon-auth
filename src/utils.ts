@@ -1,4 +1,5 @@
 import { SignupRequest, ErrorResponse } from "./interfaces";
+import type { Timestamp as _google_protobuf_Timestamp } from '../proto/google/protobuf/Timestamp';
 
 import db from "./models";
 const User = db.users!;
@@ -40,4 +41,14 @@ async function checkDuplicateUsernameOrEmail(
   }
 }
 
-export { isErrorResponse, checkDuplicateUsernameOrEmail };
+function DateToTimestamp(date: Date): _google_protobuf_Timestamp {
+  const seconds = Math.floor(date.getTime() / 1000);
+  const nanos = (date.getTime() % 1000) * 1e6;
+  return {
+    seconds: seconds,
+    nanos: nanos,
+  };
+}
+
+
+export { isErrorResponse, checkDuplicateUsernameOrEmail, DateToTimestamp };
