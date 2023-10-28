@@ -1,28 +1,44 @@
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-import express from "express";
-import logger from "morgan";
+import * as grpc from "@grpc/grpc-js";
+import * as protoLoader from "@grpc/proto-loader";
+import path from "path";
+import { loginHandler, signupHandler } from "./handlers/auth.handlers";
 import db from "./models";
 
-import authRoutes from "./routes/auth.routes";
-import userRoutes from "./routes/user.routes";
+const PROTO_FILE = "../proto/auth.proto";
 
-dotenv.config();
+const packageDefinition = protoLoader.loadSync(
+  path.resolve(__dirname, PROTO_FILE),
+  {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+  }
+);
 
-const PORT = process.env.PORT || 8080;
+const authProto = grpc.loadPackageDefinition(packageDefinition);
+const authService = (authProto as any).auth.AuthService;
+const server = new grpc.Server();
 
-const app = express();
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-db.sequelize.sync().then(() => {
-  console.log("db has been re sync");
+server.addService(authService.service, {
+  Login: loginHandler,
+  Signup: signupHandler,
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+server.bindAsync(
+  `${process.env.HOST}:${process.env.port}`,
+  grpc.ServerCredentials.createInsecure(),
+  (err, port) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
 
-app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));
+    db.sequelize.sync().then(() => {
+      console.log("db has been re sync");
+    });
+    console.log(`Server running at ${process.env.HOST}:${port}`);
+    server.start();
+  }
+);

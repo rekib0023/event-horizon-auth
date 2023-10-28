@@ -1,22 +1,17 @@
-import { Request, Response } from "express";
-
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import {
-  LoginRequest,
-  UserRequest,
-  UserResponse,
-} from "../interfaces/user.interfaces";
+import { LoginRequest } from "../../proto/auth/LoginRequest";
+import { UserResponse } from "../../proto/auth/UserResponse";
+import { ErrorResponse, SignupRequest } from "../interfaces";
 import db from "../models";
 
 const User = db.users!;
 
 const signup = async (
-  req: Request<any, any, UserRequest>,
-  res: Response<UserResponse | string>
-): Promise<Response<UserResponse | string>> => {
+  req: SignupRequest
+): Promise<UserResponse | ErrorResponse> => {
   try {
-    const { firstName, lastName, userName, email, password } = req.body;
+    const { firstName, lastName, userName, email, password } = req;
     const data = {
       firstName,
       lastName,
@@ -32,25 +27,21 @@ const signup = async (
         expiresIn: 1 * 24 * 60 * 60 * 1000,
       });
 
-      res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      console.log("user", JSON.stringify(user, null, 2));
-      console.log(token);
-      return res.status(201).send(user.toResponse());
+      return { ...user.toJSON(), token };
     } else {
-      return res.status(400).send("Bad request");
+      return { statusCode: 3, errorMessage: "Bad request" };
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 13, errorMessage: "Internal Server Error" };
   }
 };
 
 const login = async (
-  req: Request<any, any, LoginRequest>,
-  res: Response<UserResponse | string>
-): Promise<Response<UserResponse | string>> => {
+  req: LoginRequest
+): Promise<UserResponse | ErrorResponse> => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req;
 
     const user = await User.findOne({
       where: {
@@ -59,7 +50,7 @@ const login = async (
     });
 
     if (user) {
-      const isSame = await bcrypt.compare(password, user.password);
+      const isSame = await bcrypt.compare(password!, user.password);
       if (isSame) {
         let token = jwt.sign(
           { id: user.id },
@@ -69,22 +60,16 @@ const login = async (
           }
         );
 
-        res.cookie("jwt", token, {
-          maxAge: 1 * 24 * 60 * 60,
-          httpOnly: true,
-        });
-        console.log("user", JSON.stringify(user, null, 2));
-        console.log(token);
-        return res.status(200).send(user.toResponse());
+        return { ...user.toJSON(), token };
       } else {
-        return res.status(401).send("Authenticatioan failed");
+        return { statusCode: 16, errorMessage: "Authenticatioan failed" };
       }
     } else {
-      return res.status(401).send("Authentication failed");
+      return { statusCode: 5, errorMessage: "User Not found" };
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).send("Internal Server Error");
+    return { statusCode: 16, errorMessage: "Internal Server Error" };
   }
 };
 
