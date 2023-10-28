@@ -1,12 +1,13 @@
-const express = require("express");
-const logger = require("morgan");
-require("dotenv").config();
-const sequelize = require("sequelize");
-const cookieParser = require("cookie-parser");
-const authRoutes = require("./routes/auth.routes");
-const userRoutes = require("./routes/user.routes");
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express from "express";
+import logger from "morgan";
+import db from "./models";
 
-const db = require("./models");
+import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
+
+dotenv.config();
 
 const PORT = process.env.PORT || 8080;
 
