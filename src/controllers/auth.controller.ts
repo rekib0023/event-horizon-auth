@@ -5,10 +5,10 @@ import { LoginRequest } from "@proto/auth/LoginRequest";
 import { Token } from "@proto/auth/Token";
 import { TokenVerification } from "@proto/auth/TokenVerification";
 import { UserResponse } from "@proto/auth/UserResponse";
-import { ErrorResponse, SignupRequest } from "@src/interfaces";
+import { ErrorResponse, SignupRequest } from "@utils/interfaces";
 import db from "@models/index";
-import { natsWrapper } from "@src/nats-config";
-import { DateToTimestamp } from "@src/utils";
+import { natsWrapper } from "@utils/nats-config";
+import { DateToTimestamp } from "@utils/helpers";
 
 interface MyTokenPayload extends JwtPayload {
   id: string;

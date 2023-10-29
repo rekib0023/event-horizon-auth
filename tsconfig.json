@@ -6,7 +6,8 @@
       "@controllers/*": ["src/controllers/*"],
       "@handlers/*": ["src/handlers/*"],
       "@proto/*": ["proto/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "target": "es6",
     "module": "commonjs",

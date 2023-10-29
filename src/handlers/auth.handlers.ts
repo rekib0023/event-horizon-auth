@@ -9,8 +9,8 @@ import {
   signup,
   verifyToken,
 } from "@controllers/auth.controller";
-import { ErrorResponse, SignupRequest } from "../interfaces";
-import { checkDuplicateUsernameOrEmail, isErrorResponse } from "../utils";
+import { ErrorResponse, SignupRequest } from "../utils/interfaces";
+import { checkDuplicateUsernameOrEmail, isErrorResponse } from "../utils/helpers";
 
 async function loginHandler(
   call: grpc.ServerUnaryCall<LoginRequest, UserResponse>,

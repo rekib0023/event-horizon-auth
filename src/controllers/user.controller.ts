@@ -3,10 +3,10 @@ import { UpdateUserRequest } from "@proto/auth/UpdateUserRequest";
 import { UserId } from "@proto/auth/UserId";
 import { UserListResponse } from "@proto/auth/UserListResponse";
 import { UserResponse } from "@proto/auth/UserResponse";
-import { ErrorResponse } from "@src/interfaces";
+import { ErrorResponse } from "@utils/interfaces";
 import db from "@models/index";
-import { natsWrapper } from "@src/nats-config";
-import { DateToTimestamp } from "@src/utils";
+import { natsWrapper } from "@utils/nats-config";
+import { DateToTimestamp } from "@utils/helpers";
 
 const User = db.users!;
 

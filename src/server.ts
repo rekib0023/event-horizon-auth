@@ -13,7 +13,7 @@ import {
   getUsersHandler,
   updateUserHandler,
 } from "@handlers/user.handlers";
-import { natsWrapper } from "@src/nats-config";
+import { natsWrapper } from "@utils/nats-config";
 import db from "@models/index";
 
 const PROTO_FILE = "../proto/auth.proto";

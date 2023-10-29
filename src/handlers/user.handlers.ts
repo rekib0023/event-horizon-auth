@@ -10,8 +10,8 @@ import {
   getUsers,
   updateUser,
 } from "@controllers/user.controller";
-import { ErrorResponse } from "../interfaces";
-import { isErrorResponse } from "../utils";
+import { ErrorResponse } from "../utils/interfaces";
+import { isErrorResponse } from "../utils/helpers";
 
 async function getUsersHandler(
   call: grpc.ServerUnaryCall<Empty, UserResponse[]>,
