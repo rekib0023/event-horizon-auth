@@ -2,9 +2,11 @@
 
 
 export interface TokenVerification {
-  'decoded'?: (string);
+  'id'?: (string);
+  'email'?: (string);
 }
 
 export interface TokenVerification__Output {
-  'decoded'?: (string);
+  'id'?: (string);
+  'email'?: (string);
 }

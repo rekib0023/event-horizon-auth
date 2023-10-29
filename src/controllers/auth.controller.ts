@@ -12,6 +12,7 @@ import { DateToTimestamp } from "@utils/helpers";
 
 interface MyTokenPayload extends JwtPayload {
   id: string;
+  email: string;
 }
 
 const User = db.users!;
@@ -33,9 +34,13 @@ const signup = async (
     natsWrapper.publish("user.created", user);
 
     if (user) {
-      let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY! as string, {
-        expiresIn: 1 * 24 * 60 * 60 * 1000,
-      });
+      let token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.SECRET_KEY! as string,
+        {
+          expiresIn: 1 * 24 * 60 * 60 * 1000,
+        }
+      );
       return {
         id: user.id,
         firstName: user.firstName,
@@ -77,7 +82,7 @@ const login = async (
       const isSame = await bcrypt.compare(password!, user.password);
       if (isSame) {
         let token = jwt.sign(
-          { id: user.id },
+          { id: user.id, email: user.email },
           process.env.SECRET_KEY! as string,
           {
             expiresIn: 1 * 24 * 60 * 60 * 1000,
@@ -133,7 +138,7 @@ const verifyToken = async (
       process.env.SECRET_KEY!
     ) as MyTokenPayload;
     if ("id" in decoded) {
-      return { decoded: decoded.id };
+      return { id: decoded.id, email: decoded.email };
     } else {
       return {
         statusCode: grpc.status.INTERNAL,
@@ -166,7 +171,7 @@ const refreshToken = async (req: Token): Promise<Token | ErrorResponse> => {
     ) as MyTokenPayload;
 
     let newToken = jwt.sign(
-      { id: decoded.id },
+      { id: decoded.id, email: decoded.email },
       process.env.SECRET_KEY! as string,
       {
         expiresIn: 1 * 24 * 60 * 60 * 1000,
