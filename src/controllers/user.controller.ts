@@ -5,6 +5,7 @@ import { UserListResponse } from "../../proto/auth/UserListResponse";
 import { UserResponse } from "../../proto/auth/UserResponse";
 import { ErrorResponse } from "../interfaces";
 import db from "../models";
+import { natsWrapper } from "../nats-config";
 import { DateToTimestamp } from "../utils";
 
 const User = db.users!;
@@ -86,6 +87,8 @@ const updateUser = async (
     if (user) {
       await user.update(data);
       await user.save();
+      natsWrapper.publish("user.updated", user);
+
       return {
         id: user.id,
         firstName: user.firstName,
@@ -120,6 +123,8 @@ const deleteUser = async (userId: UserId): Promise<void | ErrorResponse> => {
 
     if (user) {
       await user.destroy();
+      natsWrapper.publish("user.deleted", user);
+
       return;
     } else {
       return {

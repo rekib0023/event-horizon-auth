@@ -1,14 +1,19 @@
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
-import { loginHandler, refreshTokenHandler, signupHandler, verifyTokenHandler } from "./handlers/auth.handlers";
+import {
+  loginHandler,
+  refreshTokenHandler,
+  signupHandler,
+  verifyTokenHandler,
+} from "./handlers/auth.handlers";
 import {
   deleteUserHandler,
   getUserByIdHandler,
   getUsersHandler,
   updateUserHandler,
 } from "./handlers/user.handlers";
-
+import { natsWrapper } from "./nats-config";
 import db from "./models";
 
 const PROTO_FILE = "../proto/auth.proto";
@@ -40,6 +45,10 @@ server.addService(authService.service, {
   DeleteUser: deleteUserHandler,
 });
 
+async function startNats() {
+  await natsWrapper.connect(process.env.NATS_SERVER!);
+}
+
 server.bindAsync(
   `${process.env.HOST}:${process.env.PORT}`,
   grpc.ServerCredentials.createInsecure(),
@@ -48,7 +57,7 @@ server.bindAsync(
       console.error(err);
       return;
     }
-
+    startNats();
     db.sequelize.sync().then(() => {
       console.log("db has been re sync");
     });

@@ -7,6 +7,7 @@ import { TokenVerification } from "../../proto/auth/TokenVerification";
 import { UserResponse } from "../../proto/auth/UserResponse";
 import { ErrorResponse, SignupRequest } from "../interfaces";
 import db from "../models";
+import { natsWrapper } from "../nats-config";
 import { DateToTimestamp } from "../utils";
 
 interface MyTokenPayload extends JwtPayload {
@@ -29,6 +30,7 @@ const signup = async (
     };
 
     const user = await User.create(data);
+    natsWrapper.publish("user.created", user);
 
     if (user) {
       let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY! as string, {
