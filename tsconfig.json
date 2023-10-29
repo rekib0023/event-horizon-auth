@@ -1,5 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@models/*": ["src/models/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@handlers/*": ["src/handlers/*"],
+      "@proto/*": ["proto/*"],
+      "@src/*": ["src/*"]
+    },
     "target": "es6",
     "module": "commonjs",
     "rootDir": "./",

@@ -1,4 +1,4 @@
-import { SignupRequest as GeneratedSignupRequest } from "../proto/auth/SignupRequest";
+import { SignupRequest as GeneratedSignupRequest } from "@proto/auth/SignupRequest";
 
 export interface SignupRequest
   extends Omit<

@@ -1,14 +1,14 @@
 import * as grpc from "@grpc/grpc-js";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { LoginRequest } from "../../proto/auth/LoginRequest";
-import { Token } from "../../proto/auth/Token";
-import { TokenVerification } from "../../proto/auth/TokenVerification";
-import { UserResponse } from "../../proto/auth/UserResponse";
-import { ErrorResponse, SignupRequest } from "../interfaces";
-import db from "../models";
-import { natsWrapper } from "../nats-config";
-import { DateToTimestamp } from "../utils";
+import { LoginRequest } from "@proto/auth/LoginRequest";
+import { Token } from "@proto/auth/Token";
+import { TokenVerification } from "@proto/auth/TokenVerification";
+import { UserResponse } from "@proto/auth/UserResponse";
+import { ErrorResponse, SignupRequest } from "@src/interfaces";
+import db from "@models/index";
+import { natsWrapper } from "@src/nats-config";
+import { DateToTimestamp } from "@src/utils";
 
 interface MyTokenPayload extends JwtPayload {
   id: string;

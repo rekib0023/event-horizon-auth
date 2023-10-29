@@ -1,12 +1,12 @@
 import * as grpc from "@grpc/grpc-js";
-import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
-import { UserId } from "../../proto/auth/UserId";
-import { UserListResponse } from "../../proto/auth/UserListResponse";
-import { UserResponse } from "../../proto/auth/UserResponse";
-import { ErrorResponse } from "../interfaces";
-import db from "../models";
-import { natsWrapper } from "../nats-config";
-import { DateToTimestamp } from "../utils";
+import { UpdateUserRequest } from "@proto/auth/UpdateUserRequest";
+import { UserId } from "@proto/auth/UserId";
+import { UserListResponse } from "@proto/auth/UserListResponse";
+import { UserResponse } from "@proto/auth/UserResponse";
+import { ErrorResponse } from "@src/interfaces";
+import db from "@models/index";
+import { natsWrapper } from "@src/nats-config";
+import { DateToTimestamp } from "@src/utils";
 
 const User = db.users!;
 

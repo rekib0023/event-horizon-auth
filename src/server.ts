@@ -6,15 +6,15 @@ import {
   refreshTokenHandler,
   signupHandler,
   verifyTokenHandler,
-} from "./handlers/auth.handlers";
+} from "@handlers/auth.handlers";
 import {
   deleteUserHandler,
   getUserByIdHandler,
   getUsersHandler,
   updateUserHandler,
-} from "./handlers/user.handlers";
-import { natsWrapper } from "./nats-config";
-import db from "./models";
+} from "@handlers/user.handlers";
+import { natsWrapper } from "@src/nats-config";
+import db from "@models/index";
 
 const PROTO_FILE = "../proto/auth.proto";
 

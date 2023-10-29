@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
-import { User } from "./user.model";
+import { User } from "@models/user.model";
 dotenv.config();
 
 const sequelize = new Sequelize(

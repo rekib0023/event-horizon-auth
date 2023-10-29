@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import { SignupRequest, ErrorResponse } from "./interfaces";
-import type { Timestamp as _google_protobuf_Timestamp } from "../proto/google/protobuf/Timestamp";
+import { SignupRequest, ErrorResponse } from "@src/interfaces";
+import type { Timestamp as _google_protobuf_Timestamp } from "@proto/google/protobuf/Timestamp";
 
 import db from "./models";
 const User = db.users!;

@@ -1,15 +1,15 @@
 import * as grpc from "@grpc/grpc-js";
-import { Empty } from "../../proto/auth/Empty";
-import { UpdateUserRequest } from "../../proto/auth/UpdateUserRequest";
-import { UserId } from "../../proto/auth/UserId";
-import { UserListResponse } from "../../proto/auth/UserListResponse";
-import { UserResponse } from "../../proto/auth/UserResponse";
+import { Empty } from "@proto/auth/Empty";
+import { UpdateUserRequest } from "@proto/auth/UpdateUserRequest";
+import { UserId } from "@proto/auth/UserId";
+import { UserListResponse } from "@proto/auth/UserListResponse";
+import { UserResponse } from "@proto/auth/UserResponse";
 import {
   deleteUser,
   getUserById,
   getUsers,
   updateUser,
-} from "../controllers/user.controller";
+} from "@controllers/user.controller";
 import { ErrorResponse } from "../interfaces";
 import { isErrorResponse } from "../utils";
 

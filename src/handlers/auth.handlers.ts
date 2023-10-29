@@ -1,14 +1,14 @@
 import * as grpc from "@grpc/grpc-js";
-import { LoginRequest } from "../../proto/auth/LoginRequest";
-import { Token } from "../../proto/auth/Token";
-import { TokenVerification } from "../../proto/auth/TokenVerification";
-import { UserResponse } from "../../proto/auth/UserResponse";
+import { LoginRequest } from "@proto/auth/LoginRequest";
+import { Token } from "@proto/auth/Token";
+import { TokenVerification } from "@proto/auth/TokenVerification";
+import { UserResponse } from "@proto/auth/UserResponse";
 import {
   login,
   refreshToken,
   signup,
   verifyToken,
-} from "../controllers/auth.controller";
+} from "@controllers/auth.controller";
 import { ErrorResponse, SignupRequest } from "../interfaces";
 import { checkDuplicateUsernameOrEmail, isErrorResponse } from "../utils";
 
