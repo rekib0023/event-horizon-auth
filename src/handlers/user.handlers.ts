@@ -21,7 +21,7 @@ async function getUsersHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -35,7 +35,7 @@ async function getUserByIdHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -49,7 +49,7 @@ async function deleteUserHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -63,7 +63,7 @@ async function updateUserHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);

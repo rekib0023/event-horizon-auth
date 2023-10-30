@@ -20,7 +20,7 @@ async function loginHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -43,7 +43,7 @@ async function signupHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -57,7 +57,7 @@ async function verifyTokenHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
@@ -71,7 +71,7 @@ async function refreshTokenHandler(
   if (isErrorResponse(response)) {
     callback({
       code: response.statusCode,
-      details: JSON.stringify(response),
+      details: response.errorMessage,
     });
   }
   callback(null, response);
