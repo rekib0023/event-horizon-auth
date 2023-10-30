@@ -24,6 +24,7 @@ class NatsWrapper {
 
   publish(subject: string, data: any) {
     try {
+      console.log(`Publishing: ${subject}`)
       const sc = StringCodec();
       this.client.publish(subject, sc.encode(JSON.stringify(data)));
     } catch (error) {

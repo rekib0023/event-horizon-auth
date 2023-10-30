@@ -35,7 +35,7 @@ async function signupHandler(
   if (isErrorResponse(checkDuplicate)) {
     callback({
       code: checkDuplicate.statusCode,
-      details: JSON.stringify(checkDuplicate),
+      details: checkDuplicate.errorMessage,
     });
   }
 
