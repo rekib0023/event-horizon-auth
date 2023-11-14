@@ -2,12 +2,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@models/*": ["src/models/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@handlers/*": ["src/handlers/*"],
-      "@proto/*": ["proto/*"],
-      "@src/*": ["src/*"],
-      "@utils/*": ["src/utils/*"]
+      "@models/*": ["src/app/models/*"],
+      "@controllers/*": ["src/app/controllers/*"],
+      "@handlers/*": ["src/app/handlers/*"],
+      "@proto/*": ["src/proto/*"],
+      "@app/*": ["src/app/*"],
+      "@utils/*": ["src/app/utils/*"]
     },
     "target": "es6",
     "module": "commonjs",

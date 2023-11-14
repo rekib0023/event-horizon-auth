@@ -9,7 +9,7 @@ import {
   getUserById,
   getUsers,
   updateUser,
-} from "@controllers/user.controller";
+} from "@app/controllers/user.controller";
 import { ErrorResponse } from "../utils/interfaces";
 import { isErrorResponse } from "../utils/helpers";
 

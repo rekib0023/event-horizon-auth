@@ -8,7 +8,7 @@ import {
   refreshToken,
   signup,
   verifyToken,
-} from "@controllers/auth.controller";
+} from "@app/controllers/auth.controller";
 import { ErrorResponse, SignupRequest } from "../utils/interfaces";
 import { checkDuplicateUsernameOrEmail, isErrorResponse } from "../utils/helpers";
 
