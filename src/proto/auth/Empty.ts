@@ -1,4 +1,4 @@
-// Original file: proto/auth.proto
+// Original file: src/proto/auth.proto
 
 
 export interface Empty {

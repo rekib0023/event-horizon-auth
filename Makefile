@@ -7,5 +7,5 @@ exec:
 	docker exec -it mysql-docker-container bash -c "mysql -u root -p"
 
 proto-gen:
-	npx proto-loader-gen-types --grpclib=@grpc/grpc-js --outDir=proto/ proto/*.proto
-	protoc -I./proto --go_out=. --go-grpc_out=. ./proto/auth.proto
+	npx proto-loader-gen-types --grpclib=@grpc/grpc-js --outDir=./src/proto/ ./src/proto/*.proto
+	protoc -I./src/proto --go_out=. --go-grpc_out=. ./src/proto/auth.proto

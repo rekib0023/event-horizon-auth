@@ -1,7 +1,7 @@
-// Original file: proto/auth.proto
+// Original file: src/proto/auth.proto
 
-import type { UserId as _auth_UserId, UserId__Output as _auth_UserId__Output } from './UserId';
-import type { SignupRequest as _auth_SignupRequest, SignupRequest__Output as _auth_SignupRequest__Output } from './SignupRequest';
+import type { UserId as _auth_UserId, UserId__Output as _auth_UserId__Output } from '../auth/UserId';
+import type { SignupRequest as _auth_SignupRequest, SignupRequest__Output as _auth_SignupRequest__Output } from '../auth/SignupRequest';
 
 export interface UpdateUserRequest {
   'userId'?: (_auth_UserId | null);
